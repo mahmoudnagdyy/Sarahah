@@ -41,7 +41,7 @@ export const deleteUser = asyncHandler(
             await cloudinary.uploader.destroy(req.user.profilePicture.public_id)
             await cloudinary.api.delete_folder(`Sarahah/Profile/${req.user._id}`)
         }
-        return res.send({message: 'User Deleted Successfully', user})
+        return res.send({message: 'User Deleted Successfully'})
     }
 )
 
