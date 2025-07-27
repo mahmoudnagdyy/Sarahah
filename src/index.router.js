@@ -9,6 +9,11 @@ import { globalErrorHandler } from './utils/errorHandler.js'
 export const bootstrap = (app, express) => {
 
     app.use(express.json())
+
+    app.get('/', (req, res, next) => {
+        return res.send('<h1>Hello from Sarahah App</h1>')
+    })
+
     app.use('/auth', authRouter)
     app.use('/user', userRouter)
     app.use('/message', messageRouter)
