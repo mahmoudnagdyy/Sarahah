@@ -36,7 +36,12 @@ export const updateProfile = asyncHandler(
 export const deleteUser = asyncHandler(
     async (req, res, next) => {
         const user = await userModel.deleteOne({_id: req.user._id})
-        return res.send({message: 'User Deleted Successfully'})
+
+        if(req.user.profilePicture.public_id){
+            await cloudinary.uploader.destroy(req.user.profilePicture.public_id)
+            await cloudinary.api.delete_folder(`Sarahah/Profile/${req.user._id}`)
+        }
+        return res.send({message: 'User Deleted Successfully', user})
     }
 )
 
