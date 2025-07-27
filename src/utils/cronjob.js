@@ -11,7 +11,7 @@ export const deleteUnconfirmedUsers = () => {
 
 
 export const deleteUserlessMessage = () => {
-    scheduleJob('45 6 18 * * 0', async () => {
+    scheduleJob('0 0 23 * * 3', async () => {
         const messages = await messageModel.find({})
         for (const message of messages) {
             const sender = await userModel.findById(message.sender)
