@@ -19,13 +19,16 @@ export const updateProfile = asyncHandler(
     async (req, res, next) => {
 
         const {name, username, email, password} = req.body
+        
+        let hashPassword
+        if(password){
+            const checkPassword = bcrypt.compareSync(password, req.user.password)
+            if(checkPassword){
+                return next(new Error('Old and new password are same'))
+            }
 
-        const checkPassword = bcrypt.compareSync(password, req.user.password)
-        if(checkPassword){
-            return next(new Error('Old and new password are same'))
+            hashPassword = bcrypt.hashSync(password, +process.env.SALT_ROUND)
         }
-
-        const hashPassword = bcrypt.hashSync(password, +process.env.SALT_ROUND)
 
         const user = await userModel.findByIdAndUpdate(req.user._id, {name, username, email, password: hashPassword}, {new: true})
         return res.send({message: 'Done', user})
